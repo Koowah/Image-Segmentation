@@ -10,6 +10,7 @@ def read_image(path : str):
 def display_image(title:str, image):
     cv2.imshow(title, cv2.resize(image, (1280,720))) # specify size depending on device
     cv2.waitKey()
+    cv2.destroyAllWindows()
 
 def identify_classes(X):
     return np.unique(X)
