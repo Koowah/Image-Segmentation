@@ -10,12 +10,12 @@ def make_table(paths, table=[]):
         cl1, cl2 = bt.identify_classes(image)
         print(f'classe 1 : {cl1}, classe 2 : {cl2}')
     
-        noise_1_1 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 1, 1, 0, 0)
-        noise_1_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 0, 4, 1)
+        noise_1_1 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 1, 0, 0)
+        noise_1_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 0, 0, 1)
         noise_2_1 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 1, 1, 0, 0)
-        noise_2_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 0, 2, 1)
-        noise_3_1 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 1, 1, 0, 0)
-        noise_3_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 0, 1, 9)
+        noise_2_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 0, -1, .1)
+        noise_3_1 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 1, 1, 0, .3)
+        noise_3_2 = bt.bruit_gauss(image, shape[0], shape[1],cl1, cl2, 0, 1, 0, 1)
 
         table.append([image])
         table[index].append(image + noise_1_1)
