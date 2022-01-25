@@ -1,4 +1,3 @@
-from random import gauss
 from basictools import *
 import numpy as np
 
