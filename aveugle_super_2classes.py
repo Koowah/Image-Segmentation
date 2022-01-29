@@ -4,14 +4,21 @@ from scipy.stats import norm
 def calc_prior(X, m, n, cl1, cl2):
     return ((X == cl1).sum()) / (m*n), ((X == cl2).sum()) / (m*n) # p(cl1), p(cl2) estimates
 
+
 def MPM_Gauss(Y, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
     flat_Y = Y.reshape(-1,1)
     norm_1 = norm(m1, sig1)
     norm_2 = norm(m2, sig2)
     
-    Y_hat = np.array([cl1 if p1*norm_1.pdf(y-cl1) > p2*norm_2.pdf(y-cl2) else cl2 for y in flat_Y])
+    condition = p1*norm_1.pdf(flat_Y-cl1) > p2*norm_2.pdf(flat_Y-cl2)
+    
+    Y_hat = cl1 * condition + cl2 * (np.invert(condition))
+    
+    # Y_hat = np.array([cl1 if p1*norm_1.pdf(y-cl1) > p2*norm_2.pdf(y-cl2) else cl2 for y in flat_Y]) # less numpy friendly way to put it
+    # takes SO much more time to execute !
     
     return Y_hat.reshape(Y.shape)
+
 
 def main():
     path = './images_BW/cible2.bmp'
