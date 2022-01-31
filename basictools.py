@@ -24,7 +24,7 @@ def read_image(path : str):
     return grey_img, np.shape(grey_img)
 
 def display_image(title:str, image):
-    cv2.imshow(title, ResizeWithAspectRatio(image, width=640)) # cv2.resize(image, (1024,576)) instead of image to specify size depending on device
+    cv2.imshow(title + ' (press any key to close window)', ResizeWithAspectRatio(image, width=640)) # cv2.resize(image, (1024,576)) instead of image to specify size depending on device
     cv2.waitKey()
     cv2.destroyAllWindows()
 
