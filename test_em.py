@@ -72,7 +72,7 @@ def main():
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     
     # Y = Y.clip(0,1) # clipping yields terrible results here as it denaturalizes the pdf
-    # to put in perspective with the benefits of clipping for KMeans - we don't care about distribution
+    # to put in perspective with the benefits of clipping for KMeans where we don't care about distribution
     # but only about proximity hence the interest of aggregating values under 0 and above 1 
     # which have no visual representation anyway
     
