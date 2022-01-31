@@ -72,7 +72,7 @@ def main():
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     
     # Y = Y.clip(0,1) # clipping yields terrible results here as it denaturalizes the pdf
-    # to put in perspective with the benefit of clipping for KMeans - we don't care about distribution
+    # to put in perspective with the benefits of clipping for KMeans - we don't care about distribution
     # but only about proximity hence the interest of aggregating values under 0 and above 1 
     # which have no visual representation anyway
     
@@ -81,7 +81,7 @@ def main():
     # Hocus pocus, you lost your focus ! and forgot everything you knew about the above parameters
     # p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0
     
-    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em = calc_EM(Y, m, n, cl1, cl2, .6, .4, .05, .2, .06, .2, 10)
+    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em = calc_EM(Y, m, n, cl1, cl2, .2, .3, .0, .1, .02, .1, 10)
     print(f'p1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
     
     # Y_hat = MPM_Gauss(Y, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
