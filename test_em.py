@@ -1,6 +1,11 @@
 from basictools import *
 from scipy.stats import norm
 
+# ploting libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
 def calc_prior(X, m, n, cl1, cl2):
     return ((X == cl1).sum()) / (m*n), ((X == cl2).sum()) / (m*n) # p(cl1), p(cl2) estimates
 
@@ -39,6 +44,7 @@ def calc_posterior_Gauss(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
 
 def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
     Y_flat = Y.reshape(-1,1)
+    dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
     
     for i in range(nb_iterEM):
         # Expectation
@@ -51,8 +57,17 @@ def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
         sig10 = np.sqrt(((((Y_flat - m10)**2) * post1).sum() / post1.sum()))
         m20 = ((Y_flat - cl2)*post2).sum()/post2.sum()
         sig20 = np.sqrt((((((Y_flat - cl2) - m20)**2) * post2).sum() / post2.sum()))
+        
+        # To plot convergence speed
+        dic['p1'].append(p10)
+        dic['p2'].append(p20)
+        dic['m1'].append(m10)
+        dic['m2'].append(m20)
+        dic['sig1'].append(sig10)
+        dic['sig2'].append(sig20)
+        
     
-    return p10, p20, m10, sig10, m20, sig20
+    return p10, p20, m10, sig10, m20, sig20, dic
 
 
 def main():
@@ -81,8 +96,16 @@ def main():
     # Hocus pocus, you lost your focus ! and forgot everything you knew about the above parameters
     # p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0
     
-    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em = calc_EM(Y, m, n, cl1, cl2, .2, .3, .0, .1, .02, .1, 10)
+    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic = calc_EM(Y, m, n, cl1, cl2, .2, .3, .0, .1, .02, .1, 10)
     print(f'p1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
+    
+    df = pd.DataFrame.from_dict(dic)
+    
+    sns.set()
+    sns.relplot(data=df, kind='line')
+    # for column in df.columns:
+    #     sns.relplot(data=df[column], kind='line', palette='crest')
+    plt.show()
     
     # Y_hat = MPM_Gauss(Y, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
     # display_image('Y_hat (press any key to close window)', Y_hat*255)
