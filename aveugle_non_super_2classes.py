@@ -1,21 +1,14 @@
 from basictools import *
 from scipy.stats import norm
 
+
+###################################################################################
+###################################################################################
+###################################################################################
+
+
 def calc_prior(X, m, n, cl1, cl2):
     return ((X == cl1).sum()) / (m*n), ((X == cl2).sum()) / (m*n) # p(cl1), p(cl2) estimates
-
-
-def MPM_Gauss(Y, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
-    flat_Y = Y.reshape(-1,1)
-    norm_1 = norm(m1, sig1)
-    norm_2 = norm(m2, sig2)
-    
-    condition = p1*norm_1.pdf(flat_Y-cl1) > p2*norm_2.pdf(flat_Y-cl2)
-    
-    Y_hat = cl1 * condition + cl2 * (np.invert(condition))
-    
-    return Y_hat.reshape(Y.shape)
-
 
 def calc_posterior_Gauss(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
     # posterior = p(X | Y) = p(Y|X)p(X) / sum(p(Y|X)p(X)) for each class X
@@ -24,8 +17,8 @@ def calc_posterior_Gauss(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
     norm_1 = norm(m1, sig1)
     norm_2 = norm(m2, sig2)
     
-    f1 = p1*norm_1.pdf(flat_Y-cl1) # this way we call stats.norm only once
-    f2 = p2*norm_2.pdf(flat_Y-cl2)
+    f1 = p1*norm_1.pdf(flat_Y - cl1) # this way we call stats.norm only once
+    f2 = p2*norm_2.pdf(flat_Y - cl2)
     
     post_cl1 = (f1 / (f1 + f2))
     post_cl2 = (f2 / (f1 + f2))
@@ -36,23 +29,51 @@ def calc_posterior_Gauss(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
     
     return post_cl1, post_cl2
 
+def est_empirical(X, Y, cl1, cl2):
+    p1 = X[X == cl1].sum() / np.prod(X.shape)
+    p2 = X[X == cl2].sum() / np.prod(X.shape)
+    m1 = (Y[X == cl1] - cl1) / (X == cl1).sum()
+    m2 = (Y[X == cl2] - cl2) / (X == cl2).sum()
+    sig1 = np.sqrt(((Y[X == cl1] - m1)**2).sum() / (X == cl1).sum())
+    sig2 = np.sqrt(((Y[X == cl2] - m2)**2).sum() / (X == cl2).sum())
+    
+    return p1, p2, m1, sig1, m2, sig2
+
+def init_param(Y, cl1, cl2, iter_KM):
+    
+    pass
+
 
 def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
     Y_flat = Y.reshape(-1,1)
+    dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
     
     for i in range(nb_iterEM):
         # Expectation
-        P1, P2 = calc_posterior_Gauss(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20)
+        post1, post2 = calc_posterior_Gauss(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20)
        
         # Maximization
-        p10 = P1.sum()/len(P1)
-        p20 = P2.sum()/len(P2)
-        m10 = (Y_flat*P1).sum()/P1.sum()
-        sig10 = ((Y_flat - m10)*P1).sum()/P1.sum()
-        m20 = (Y_flat*P2).sum()/P2.sum()
-        sig20 = ((Y_flat - m20)*P2).sum()/P2.sum()
+        p10 = post1.sum()/len(post1)
+        p20 = post2.sum()/len(post2)
+        m10 = (Y_flat*post1).sum()/post1.sum()
+        sig10 = np.sqrt(((((Y_flat - m10)**2) * post1).sum() / post1.sum()))
+        m20 = ((Y_flat - cl2)*post2).sum()/post2.sum()
+        sig20 = np.sqrt((((((Y_flat - cl2) - m20)**2) * post2).sum() / post2.sum()))
+        
+        # To plot convergence
+        dic['p1'].append(p10)
+        dic['p2'].append(p20)
+        dic['m1'].append(m10)
+        dic['m2'].append(m20)
+        dic['sig1'].append(sig10)
+        dic['sig2'].append(sig20)
     
-    return p10, p20, m10, sig10, m20, sig20
+    return p10, p20, m10, sig10, m20, sig20, dic
+
+
+###################################################################################
+###################################################################################
+###################################################################################
 
 
 def main():
@@ -74,13 +95,7 @@ def main():
     
     # Hocus pocus, you lost your focus ! and forgot everything you knew about the above parameters
     # p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0
-    
-    Y_hat = MPM_Gauss(Y, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
-    display_image('Y_hat (press any key to close window)', Y_hat*255)
-    
-    print(f'\nError rate MPM : {error_rate(0, X, Y_hat, m, n):.1%}')
-    print(f'Error rate KMeans : {evaluate_kmeans(2, X, Y)[1]:.1%}')
-    
+        
 main()
     
 
