@@ -50,7 +50,6 @@ def init_param(Y, cl1, cl2):
     
     return X_est
 
-
 def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
     Y_flat = Y.reshape(-1,1)
     dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
