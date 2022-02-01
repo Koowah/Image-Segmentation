@@ -136,7 +136,7 @@ def main():
     p1, p2 = calc_prior(X, m, n, cl1, cl2) # priors of each class
     print(f'\np(cl1) = p1 = {p1}\np(cl2) = p2 = {p2}')
     
-    m1, sig1, m2, sig2 = .05, .2, -.016, .2 # gaussian noise parameters    
+    m1, sig1, m2, sig2 = .2, .2, -.3, .2 # gaussian noise parameters    
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     display_image('Y', Y)
     
