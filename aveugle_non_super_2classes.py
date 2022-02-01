@@ -34,30 +34,51 @@ def calc_posterior_Gauss(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2):
     return post_cl1, post_cl2
 
 def posterior_sampling(post_cl1, post_cl2, cl1, cl2, m, n): # tirage_apost
-    pass
+    sample = np.random.rand(m*n).reshape(-1,1) # m*n samples from uniform distribution over [0,1)
+    
+    condition = sample < post_cl1 # we draw cl1 with posterior probability of cl1 aka when our uniform sample(i) < post_cl1(i) and cl2 otherwise
+    X_est = cl1 * condition + cl2 * np.invert(condition)
+    
+    return X_est
 
-def est_empirical(X, Y, cl1, cl2):
-    p1 = (X == cl1).sum() / np.prod(X.shape)
+def init_param(Y, cl1, cl2): # initialize an estimate of X from KMeans
+    X_init, _ = evaluate_kmeans(2, Y, Y)
+    X_init[X_init == np.unique(X_init)[0]] = cl1
+    X_init[X_init == np.unique(X_init)[1]] = cl2
+    
+    return X_init
+
+def est_empirical(X, Y, cl1, cl2): # Empirical estimates of parameters
+    p1 = (X == cl1).sum() / np.prod(X.shape) # frequency estimates
     p2 = (X == cl2).sum() / np.prod(X.shape)
-    m1 = (Y[X == cl1] - cl1).sum() / (X == cl1).sum()
+    m1 = (Y[X == cl1] - cl1).sum() / (X == cl1).sum() # means over noise realizations
     m2 = (Y[X == cl2] - cl2).sum() / (X == cl2).sum()
-    sig1 = np.sqrt(((Y[X == cl1] - m1)**2).sum() / (X == cl1).sum())
+    sig1 = np.sqrt(((Y[X == cl1] - m1)**2).sum() / (X == cl1).sum()) # stds over noise realizations
     sig2 = np.sqrt(((Y[X == cl2] - m2)**2).sum() / (X == cl2).sum())
     
     return p1, p2, m1, sig1, m2, sig2
 
-def init_param(Y, cl1, cl2):
-    X_est, _ = evaluate_kmeans(2, Y, Y)
-    X_est[X_est == np.unique(X_est)[0]] = cl1
-    X_est[X_est == np.unique(X_est)[1]] = cl2
+def calc_SEM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iter):
+    # Y_flat = Y.reshape(-1,1)
+    dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
     
-    return X_est
+    for _ in range(nb_iter):
+        # Calculate posterior with current parameters
+        post1, post2 = calc_posterior_Gauss(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20)
+        
+        # Sample X from posterior distribution
+        X_est = posterior_sampling(post1, post2, cl1, cl2, m, n)
+        
+        # Empirically estimates of parameters from X_est
+        p10, p20, m10, sig10, m20, sig20 = est_empirical(X_est, Y, cl1, cl2)
+    
+    return p10, p20, m10, sig10, m20, sig20, dic
 
 def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
     Y_flat = Y.reshape(-1,1)
     dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
     
-    for i in range(nb_iterEM):
+    for _ in range(nb_iterEM):
         # Expectation
         post1, post2 = calc_posterior_Gauss(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20)
        
