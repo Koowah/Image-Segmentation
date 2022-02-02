@@ -58,12 +58,12 @@ def est_empirical(X, Y, cl1, cl2): # Empirical estimates of parameters
     Y_flat = Y.reshape(-1,1)
     X_flat = X.reshape(-1,1)
     
-    p1 = (X_flat == cl1).sum() / np.prod(X_flat.shape) # frequency estimates
-    p2 = (X_flat == cl2).sum() / np.prod(X_flat.shape)
+    p1 = (X_flat == cl1).sum() / X_flat.shape[0] # frequency estimates
+    p2 = (X_flat == cl2).sum() / X_flat.shape[0]
     m1 = (Y_flat[X_flat == cl1] - cl1).sum() / (X_flat == cl1).sum() # means over noise realizations
     m2 = (Y_flat[X_flat == cl2] - cl2).sum() / (X_flat == cl2).sum()
-    sig1 = np.sqrt(((Y_flat[X_flat == cl1] - m1)**2).sum() / (X_flat == cl1).sum()) # stds over noise realizations
-    sig2 = np.sqrt(((Y_flat[X_flat == cl2] - m2)**2).sum() / (X_flat == cl2).sum())
+    sig1 = np.sqrt((((Y_flat[X_flat == cl1] - cl1) - m1)**2).sum() / (X_flat == cl1).sum()) # stds over noise realizations
+    sig2 = np.sqrt((((Y_flat[X_flat == cl2] - cl2) - m2)**2).sum() / (X_flat == cl2).sum())
     
     return p1, p2, m1, sig1, m2, sig2
 
@@ -136,7 +136,7 @@ def main():
     p1, p2 = calc_prior(X, m, n, cl1, cl2) # priors of each class
     print(f'\np(cl1) = p1 = {p1}\np(cl2) = p2 = {p2}')
     
-    m1, sig1, m2, sig2 = .2, .2, -.3, .2 # gaussian noise parameters    
+    m1, sig1, m2, sig2 = .2, .6, -.3, .6 # gaussian noise parameters    
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     display_image('Y', Y)
     
@@ -147,18 +147,18 @@ def main():
     p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0 # he 4gett ... but he also estimett !
     p1, p2, m1, sig1, m2, sig2 = est_empirical(init_param(Y, cl1, cl2), Y, cl1, cl2) # empirically estimating a starting point for EM & SEM algorithms
     
-    # p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 10)
+    p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300)
     p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic_em = calc_EM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300) # EM algorithm estimates
     
     print(f'EM\np1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
-    # print(f'SEM\np1: {p1_sem}, p2 : {p2_sem}, m1 : {m1_sem}, sig1 : {sig1_sem}, m2 : {m2_sem}, sig2 : {sig2_sem}')
+    print(f'SEM\np1: {p1_sem}, p2 : {p2_sem}, m1 : {m1_sem}, sig1 : {sig1_sem}, m2 : {m2_sem}, sig2 : {sig2_sem}')
     
-    df_em = pd.DataFrame.from_dict(dic_em)
-    # df_sem = pd.DataFrame.from_dict(dic_sem)
+    # df_em = pd.DataFrame.from_dict(dic_em)
+    df_sem = pd.DataFrame.from_dict(dic_sem)
     
     sns.set()
-    sns.relplot(data=df_em, kind='line') # Plotting evolution of parameters over EM iterations
-    # sns.relplot(data=df_sem, kind='line') # Plotting evolution of parameters over SEM iterations
+    # sns.relplot(data=df_em, kind='line') # Plotting evolution of parameters over EM iterations
+    sns.relplot(data=df_sem, kind='line') # Plotting evolution of parameters over SEM iterations
     plt.show()
 
 # si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
