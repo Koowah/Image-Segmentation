@@ -72,13 +72,13 @@ def calc_SEM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iter):
     dic = {'p1':[p10], 'p2':[p20], 'm1':[m10], 'm2':[m20], 'sig1':[sig10], 'sig2':[sig20]}
     
     for _ in range(nb_iter):
-        # Calculate posterior with current parameters
+        # Calculate posterior with current parameters - E-Step 
         post1, post2 = calc_posterior_Gauss(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20)
         
-        # Sample X from posterior distribution
+        # Sample X from posterior distribution - S-step
         X_est = posterior_sampling(post1, post2, cl1, cl2, m, n)
         
-        # Empirically estimates of parameters from X_est
+        # Empirically estimates of parameters from X_est - M-Step
         p10, p20, m10, sig10, m20, sig20 = est_empirical(X_est, Y, cl1, cl2)
         
         # To plot convergence
@@ -138,6 +138,7 @@ def main():
     
     m1, sig1, m2, sig2 = .2, .6, -.3, .6 # gaussian noise parameters    
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
+    print(f'm1 = {m1}, sig1 = {sig1}, m2 = {m2}, sig2 = {sig2}')
     display_image('Y', Y)
     
     ################################################################################################
@@ -147,17 +148,17 @@ def main():
     p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0 # he 4gett ... but he also estimett !
     p1, p2, m1, sig1, m2, sig2 = est_empirical(init_param(Y, cl1, cl2), Y, cl1, cl2) # empirically estimating a starting point for EM & SEM algorithms
     
-    p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300)
-    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic_em = calc_EM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300) # EM algorithm estimates
+    p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 1000)
+    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic_em = calc_EM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 1000) # EM algorithm estimates
     
-    print(f'EM\np1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
+    print(f'\nEM\np1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
     print(f'SEM\np1: {p1_sem}, p2 : {p2_sem}, m1 : {m1_sem}, sig1 : {sig1_sem}, m2 : {m2_sem}, sig2 : {sig2_sem}')
     
-    # df_em = pd.DataFrame.from_dict(dic_em)
+    df_em = pd.DataFrame.from_dict(dic_em)
     df_sem = pd.DataFrame.from_dict(dic_sem)
     
     sns.set()
-    # sns.relplot(data=df_em, kind='line') # Plotting evolution of parameters over EM iterations
+    sns.relplot(data=df_em, kind='line') # Plotting evolution of parameters over EM iterations
     sns.relplot(data=df_sem, kind='line') # Plotting evolution of parameters over SEM iterations
     plt.show()
 
