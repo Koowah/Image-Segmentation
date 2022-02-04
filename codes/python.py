@@ -5,6 +5,8 @@ Hugo Gangloff
 '''
 
 import numpy as np
+import cv2
+import os
 
 def calc_proba_champ(alpha, normalization=True, voisinage=4):
     '''
@@ -39,6 +41,13 @@ def genere_Gibbs_proba(mm, nn, classe, proba, nb_iter, voisinage=4):
     # pour chaque itération de l'échantillonneur de Gibbs
     for k in range(nb_iter):
         print("Gibbs itération numéro", k)
+        
+        ##################################################################################
+        ### Added this code to observe evolution of image over gibbs sampler iteration ###
+        # X = X.astype('uint8')
+        # cv2.imwrite(os.path.join('images_MRF', f'X_Gibbs_{k}.png'), X*255)
+        ##################################################################################
+        
         # pour chaque site
         for i in range(1, mm - 1):
             for j in range(1, nn - 1):
