@@ -11,7 +11,7 @@ proba_Markov_field = calc_proba_champ(alpha=1) # array where element (i,j) = P[x
 classes = [0,1]
 
 # this function uses gibbs sampling to generate X from its conditional distributions
-X = genere_Gibbs_proba(m + 2, n + 2, classes, proba_Markov_field, 100)
+X = genere_Gibbs_proba(m + 2, n + 2, classes, proba_Markov_field, 1000)
 X = X.astype('uint8') # necessary to display image with cv2.imshow - initial type int32
 X = redecoupe_image(X) # gets rid of first & last rows + columns that can't be updated by Gibbs
 

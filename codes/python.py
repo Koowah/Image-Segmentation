@@ -45,7 +45,9 @@ def genere_Gibbs_proba(mm, nn, classe, proba, nb_iter, voisinage=4):
         ##################################################################################
         ### Added this code to observe evolution of image over gibbs sampler iteration ###
         # X = X.astype('uint8')
+        # X = redecoupe_image(X)
         # cv2.imwrite(os.path.join('images_MRF', f'X_Gibbs_{k}.png'), X*255)
+        # X = nouvelle_image(X)
         ##################################################################################
         
         # pour chaque site
