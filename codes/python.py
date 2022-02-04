@@ -5,8 +5,10 @@ Hugo Gangloff
 '''
 
 import numpy as np
-import cv2
-import os
+
+# # uncomment along with relevant lines to save X image after each gibbs iteration
+# import cv2
+# import os
 
 def calc_proba_champ(alpha, normalization=True, voisinage=4):
     '''
