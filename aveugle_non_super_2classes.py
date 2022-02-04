@@ -162,8 +162,9 @@ def main():
     sns.relplot(data=df_sem, kind='line') # Plotting evolution of parameters over SEM iterations
     plt.show()
 
-# si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
-main()
+if __name__ == '__main__':
+    # si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
+    main()
     
 
     
