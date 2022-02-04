@@ -36,5 +36,5 @@ def main():
     table = make_table(paths)
     bt.display_image('Comparative table', table)
 
-
-main()
+if __name__ == '__main__':
+    main()

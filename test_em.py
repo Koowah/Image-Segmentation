@@ -104,8 +104,9 @@ def main():
     #     sns.relplot(data=df[column], kind='line', palette='crest')
     plt.show()
     
-    
-main()
+
+if __name__ == '__main__':  
+    main()
     
 
     

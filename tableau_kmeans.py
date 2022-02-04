@@ -52,7 +52,8 @@ def main():
     kmeans_images = np.concatenate(tuple([img[0] for img in kmeans_results]), axis=1)
     bt.display_image('Kmeans on noisy', np.concatenate((row_1, kmeans_images)))
 
-main()
+if __name__ == '__main__':
+    main()
 
 # parametre kmeans pour multiple initialisations + enlever random_state fixe
 # changer les valeurs des bruits pour avoir des résultats plus exploitables pour kmeans

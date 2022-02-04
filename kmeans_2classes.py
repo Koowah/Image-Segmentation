@@ -31,4 +31,5 @@ def main():
     print(f'Error rate between image & Noisy_1 :  {error_rate(0.1, image, noisy_1, shape[0], shape[1]):.1%}')
     
 
-main()
+if __name__ == '__main__':
+    main()

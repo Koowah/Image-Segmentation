@@ -42,8 +42,10 @@ def main():
     
     print(f'\nError rate MPM : {error_rate(0, X, Y_hat, m, n):.1%}')
     print(f'Error rate KMeans : {evaluate_kmeans(2, X, Y)[1]:.1%}')
-    
-main()
+  
+
+if __name__ == '__main__':  
+    main()
     
 
     
