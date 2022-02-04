@@ -6,7 +6,7 @@ Hugo Gangloff
 
 import numpy as np
 
-# # uncomment along with relevant lines to save X image after each gibbs iteration
+# # uncomment along with relevant lines in genere_gibbs_proba to save X image after each gibbs iteration
 # import cv2
 # import os
 
