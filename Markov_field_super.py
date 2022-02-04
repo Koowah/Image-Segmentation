@@ -29,7 +29,7 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 20, 20)
+    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 700, 20)
     display_image('MPM estimated X', X_hat)
     
     assert(X_hat.shape == (m,n), 'Shape should be 256*256')
