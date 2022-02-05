@@ -3,6 +3,7 @@ from basictools import*
 from aveugle_non_super_2classes import init_param, est_empirical
 
 # for plotting purposes
+import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
