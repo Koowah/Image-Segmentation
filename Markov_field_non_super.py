@@ -55,8 +55,8 @@ def EM_Gibbs_Gauss(Y, classe, m1, sig1, m2, sig2, proba, nb_iter_Gibbs_EM, nb_si
 def estim_param_Gauss_noise_EM(Y, classe, Ppost):
     Y_flat = Y.reshape(-1,1)
     
-    post1 = Ppost[..., 0]
-    post2 = Ppost[..., 1]
+    post1 = Ppost[..., 0].reshape(-1,1)
+    post2 = Ppost[..., 1].reshape(-1,1)
     cl1 = classe[0]
     cl2 = classe[1]
     
