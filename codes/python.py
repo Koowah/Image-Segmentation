@@ -134,9 +134,9 @@ def genere_Gibbs_proba_apost(Y, m1, sig1, m2, sig2, classe, proba, nb_iter,
                     config += (X[i + v[0], j + v[1]] == classe[0])
                 distribution_locale_apost = proba[config].copy() # copy ! 
                 distribution_locale_apost[0] *= (1 / (np.sqrt(2 * np.pi) * sig1)
-                    * np.exp(-0.5 * (Y[i, j] - m1) ** 2 / sig1 ** 2))
+                    * np.exp(-0.5 * (Y[i, j] - classe[0] - m1) ** 2 / sig1 ** 2))
                 distribution_locale_apost[1] *= (1 / (np.sqrt(2 * np.pi) * sig2)
-                    * np.exp(-0.5 * (Y[i, j] - m2) ** 2 / sig2 ** 2))
+                    * np.exp(-0.5 * (Y[i, j] - classe[1] - m2) ** 2 / sig2 ** 2))
                 distribution_locale_apost /= np.sum(distribution_locale_apost)
                 
                 # on met à jour le site avec un tirage selon la
