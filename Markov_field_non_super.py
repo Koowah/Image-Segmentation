@@ -20,18 +20,18 @@ def init_param_EM(Y, classe):
     N_part = calc_N_part(X_KMeans, classe)
     proba = N_part / N_part.sum(axis=1).reshape(-1,1)
         
-    assert(int(proba.sum().item()) == 5, 'Each row should sum to 1')
+    assert int(proba.sum().item()) == 5, 'Each row should sum to 1'
     
     return m1, sig1, m2, sig2, proba
 
 def EM_Gibbs_Gauss(Y, classe, m1, sig1, m2, sig2, proba, nb_iter_Gibbs_EM, nb_simu_EM):
-    for _ in nb_simu_EM:
+    for _ in range(nb_simu_EM):
         X_est = genere_Gibbs_proba_apost(Y, m1, sig1, m2, sig2, classe, proba, nb_iter_Gibbs_EM) # X sampled from posterior distribution using MCMC approach
         
-        N_part = calc_N_part(X_est)
+        N_part = calc_N_part(X_est, classe)
         proba = N_part / N_part.sum(axis=1).reshape(-1,1)
         
-        N_post = calc_N_post(X_est)
+        N_post = calc_N_post(X_est, classe)
         table_voisins = [(0, -1), (-1, 0), (0, 1), (1, 0)]
         for i in range(1, X_est.shape[0] - 1):
             for j in range(1, X_est.shape[1] - 1):
@@ -122,7 +122,7 @@ def main():
     sns.relplot(data=df_em, kind='line') # Plotting evolution of parameters over EM iterations
     plt.show()
     
-    # assert(X_hat.shape == (m,n), 'Shape should be 256*256')
+    # assert X_hat.shape == (m,n), 'Shape should be 256*256'
     
     # error = error_rate(0, X, X_hat, m, n)
     # print(f'MPM error rate for HMF : {error}')
