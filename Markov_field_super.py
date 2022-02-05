@@ -29,9 +29,9 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 50, 5) # tried w/ 200 gibbs not good
+    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 10, 10) # tried w/ 200 gibbs not good
     X_hat = redecoupe_image(X_hat)
-    display_image('MPM estimated X', X_hat)
+    display_image('MPM estimated X', 255*X_hat)
     
     filename = 'HMF_MPM.png'
     cv2.imwrite(filename, X_hat*255) # write X into an image file
