@@ -6,7 +6,7 @@ def calc_prior(X, m, n, cl1, cl2):
 
 def main():
     # Let's gain time by using previously generated Markov field
-    path_markov_field = './Markov_field.png'
+    path_markov_field = './Markov_field_sample_1000_gibbs.png'
     proba_Markov_field = calc_proba_champ(alpha=1)
 
     X, shape = read_image(path_markov_field)
@@ -29,10 +29,14 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 700, 20)
+    X_hat = MPM_proba_gauss(Y_prep, classes, m1, sig1, m2, sig2, proba_Markov_field, 10, 20) # tried w/ 200 gibbs not good
+    X_hat = redecoupe_image(X_hat)
     display_image('MPM estimated X', X_hat)
     
-    assert(X_hat.shape == (m,n), 'Shape should be 256*256')
+    filename = 'HMF_MPM.png'
+    cv2.imwrite(filename, X_hat*255) # write X into an image file
+    
+    # assert(X_hat.shape == (m,n), 'Shape should be 256*256')
     
     error = error_rate(0, X, X_hat, m, n)
     print(f'MPM error rate for HMF : {error}')
