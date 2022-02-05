@@ -6,7 +6,7 @@ Hugo Gangloff
 
 import numpy as np
 
-# # uncomment along with relevant lines in genere_gibbs_proba to save X image after each gibbs iteration
+# uncomment along with relevant lines in genere_gibbs_proba or genere_Gibbs_proba_apost to save X.png after each gibbs iteration
 # import cv2
 # import os
 
@@ -124,6 +124,15 @@ def genere_Gibbs_proba_apost(Y, m1, sig1, m2, sig2, classe, proba, nb_iter,
     # pour chaque itération de l'échantillonneur de Gibbs
     for k in range(nb_iter):
         print("Gibbs a posteriori itération numéro", k)
+        
+        ##################################################################################
+        ### Added this code to observe evolution of X over postgibbs sampler iteration ###
+        # X = X.astype('uint8')
+        # X = redecoupe_image(X)
+        # cv2.imwrite(os.path.join('images_posterior_gibbs', f'X_Posterior_Gibbs_{k}.png'), X*255)
+        # X = nouvelle_image(X)
+        ##################################################################################
+        
         # pour chaque site
         for i in range(1, Y.shape[0] - 1):
             for j in range(1, Y.shape[1] - 1):
