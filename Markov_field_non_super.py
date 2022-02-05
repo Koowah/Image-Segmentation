@@ -68,8 +68,8 @@ def estim_param_Gauss_noise_EM(Y, classe, Ppost):
     return m1, sig1, m2, sig2
 
 def EM_Gauss(Y, classe, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM):
-    dic = {}
     m1, sig1, m2, sig2, proba = init_param_EM(Y, classe)
+    dic = {'m1':[m1], 'm2':[m2], 'sig1':[sig1], 'sig2':[sig2]}
     
     for _ in range(nb_iter_EM):
         # Expectation
