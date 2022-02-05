@@ -6,7 +6,7 @@ def calc_prior(X, m, n, cl1, cl2):
 
 def main():
     # Let's gain time by using previously generated Markov field
-    path_markov_field = './Markov_field.png'
+    path_markov_field = './Markov_field_sample_1000_gibbs.png'
     proba_Markov_field = calc_proba_champ(alpha=1)
 
     X, shape = read_image(path_markov_field)
