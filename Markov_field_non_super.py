@@ -111,7 +111,7 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 10, 4, 5
+    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 10, 10, 5
     m1_EM, sig1_EM, m2_EM, sig2_EM, dic_EM = EM_Gauss(Y_prep, classes, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM)
     
     print(f'\nm1 : {m1_EM}, sig1 : {sig1_EM}, m2 : {m2_EM}, sig2 : {sig2_EM}')
