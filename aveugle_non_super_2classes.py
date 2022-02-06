@@ -148,11 +148,11 @@ def main():
     p1, p2, m1, m2, sig1, sig2 = 0, 0, 0, 0, 0, 0 # he 4gett ... but he also estimett !
     p1, p2, m1, sig1, m2, sig2 = est_empirical(init_param(Y, cl1, cl2), Y, cl1, cl2) # empirically estimating a starting point for EM & SEM algorithms
     
-    p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 1000)
-    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic_em = calc_EM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 1000) # EM algorithm estimates
+    p1_sem, p2_sem, m1_sem, sig1_sem, m2_sem, sig2_sem, dic_sem = calc_SEM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300)
+    p1_em, p2_em, m1_em, sig1_em, m2_em, sig2_em, dic_em = calc_EM(Y, m, n, cl1, cl2, p1, p2, m1, sig1, m2, sig2, 300) # EM algorithm estimates
     
-    print(f'\nEM\np1: {p1_em}, p2 : {p2_em}, m1 : {m1_em}, sig1 : {sig1_em}, m2 : {m2_em}, sig2 : {sig2_em}')
-    print(f'SEM\np1: {p1_sem}, p2 : {p2_sem}, m1 : {m1_sem}, sig1 : {sig1_sem}, m2 : {m2_sem}, sig2 : {sig2_sem}')
+    print(f'\nEM\np1: {p1_em:.3f}, p2 : {p2_em:.3f}, m1 : {m1_em:.3f}, sig1 : {sig1_em:.3f}, m2 : {m2_em:.3f}, sig2 : {sig2_em:.3f}')
+    print(f'SEM\np1: {p1_sem:.3f}, p2 : {p2_sem:.3f}, m1 : {m1_sem:.3f}, sig1 : {sig1_sem:.3f}, m2 : {m2_sem:.3f}, sig2 : {sig2_sem:.3f}')
     
     df_em = pd.DataFrame.from_dict(dic_em)
     df_sem = pd.DataFrame.from_dict(dic_sem)
