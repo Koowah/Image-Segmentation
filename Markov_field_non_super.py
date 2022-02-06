@@ -79,7 +79,8 @@ def EM_Gauss(Y, classe, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM):
         # Maximization
         m1, sig1, m2, sig2 = estim_param_Gauss_noise_EM(Y, classe, Ppost)
     
-        # To plot convergence        dic['m1'].append(m1)
+        # To plot convergence        
+        dic['m1'].append(m1)
         dic['m2'].append(m2)
         dic['sig1'].append(sig1)
         dic['sig2'].append(sig2)
@@ -103,7 +104,7 @@ def main():
     p1, p2 = calc_prior(X, m, n, cl1, cl2) # priors of each class
     print(f'\np(cl1) = p1 = {p1:.3f}\np(cl2) = p2 = {p2:.3f}')
 
-    m1, sig1, m2, sig2 = .3, .6, -.19, .57 # gaussian noise parameters
+    m1, sig1, m2, sig2 = .3, .6, -.19, .47 # gaussian noise parameters
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     print(f'\nm1 = {m1:.2f}, sig1 = {sig1:.2f}, m2 = {m2:.2f}, sig2 = {sig2:.2f}')
     display_image('Noisy Markov field Y', Y)
@@ -111,7 +112,7 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 10, 10, 5
+    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 25, 3, 5
     m1_EM, sig1_EM, m2_EM, sig2_EM, dic_EM = EM_Gauss(Y_prep, classes, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM)
     
     print(f'\nm1 : {m1_EM}, sig1 : {sig1_EM}, m2 : {m2_EM}, sig2 : {sig2_EM}')
