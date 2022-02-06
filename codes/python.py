@@ -126,11 +126,18 @@ def genere_Gibbs_proba_apost(Y, m1, sig1, m2, sig2, classe, proba, nb_iter,
         print("Gibbs a posteriori itération numéro", k)
         
         ##################################################################################
-        ### Added this code to observe evolution of X over postgibbs sampler iteration ###
+        ### Added this code to record evolution of X over postgibbs sampler iteration ###
         # X = X.astype('uint8')
         # X = redecoupe_image(X)
         # cv2.imwrite(os.path.join('images_posterior_gibbs', f'X_Posterior_Gibbs_{k}.png'), X*255)
         # X = nouvelle_image(X)
+        ##################################################################################
+        
+        ##################################################################################
+        ### Added this code to observe evolution of X over postgibbs sampler iteration ###
+        # cv2.imshow(f'X_{k}', 255*X)
+        # cv2.waitKey()
+        # cv2.destroyAllWindows()
         ##################################################################################
         
         # pour chaque site
