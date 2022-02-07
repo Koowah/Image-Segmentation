@@ -20,12 +20,13 @@ def init_param_EM(Y, classe):
     N_part = calc_N_part(X_KMeans, classe)
     proba = N_part / N_part.sum(axis=1).reshape(-1,1)
         
-    assert int(proba.sum().item()) == 5, 'Each row should sum to 1'
+    assert round(proba.sum().item()) == 5, 'Each row should sum to 1'
     
     return m1, sig1, m2, sig2, proba
 
 def EM_Gibbs_Gauss(Y, classe, m1, sig1, m2, sig2, proba, nb_iter_Gibbs_EM, nb_simu_EM):
     for __ in range(nb_simu_EM):
+        print("nb_simu_EM num", __)
         X_est = genere_Gibbs_proba_apost(Y, m1, sig1, m2, sig2, classe, proba, nb_iter_Gibbs_EM) # X sampled from posterior distribution using MCMC approach
         X_est_new = redecoupe_image(X_est)
         
@@ -73,6 +74,7 @@ def EM_Gauss(Y, classe, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM):
     dic = {'m1':[m1], 'm2':[m2], 'sig1':[sig1], 'sig2':[sig2]}
     
     for _ in range(nb_iter_EM):
+        print('EM iteration', _)
         # Expectation
         proba, Ppost = EM_Gibbs_Gauss(Y, classe, m1, sig1, m2, sig2, proba, nb_iter_Gibbs_EM, nb_simu_EM)
         
@@ -112,7 +114,7 @@ def main():
     Y_prep = nouvelle_image(Y) # adds 2 additionnal rows & columns so that gibbs sampler runs on full image Y
     display_image('Noisy Markov field Y + new rows/cols', Y_prep)
     
-    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 25, 3, 5
+    nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM = 50, 10, 5
     m1_EM, sig1_EM, m2_EM, sig2_EM, dic_EM = EM_Gauss(Y_prep, classes, nb_iter_EM, nb_iter_Gibbs_EM, nb_simu_EM)
     
     print(f'\nm1 : {m1_EM}, sig1 : {sig1_EM}, m2 : {m2_EM}, sig2 : {sig2_EM}')
