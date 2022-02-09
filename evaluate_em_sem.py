@@ -151,7 +151,7 @@ def main(em=True, sem=True, noise=1, init=1):
     if init==1: # initialized at actual parameters
         pass
         p10, p20, m10, m20, sig10, sig20 = p1, p2, m1, m2, sig1, sig2 # he 4gett ... but he also estimett !
-    elif init==2: # initialized at aberrant values
+    elif init==2: # initialized at close values
         p10, p20, m10, sig10, m20, sig20 = .4, .6, .2, 1, 0, 2
     else: # initialized with KM
         p10, p20, m10, sig10, m20, sig20 = est_empirical(init_param(Y, cl1, cl2), Y, cl1, cl2) # empirically estimating a starting point for EM & SEM algorithms
@@ -176,7 +176,7 @@ def main(em=True, sem=True, noise=1, init=1):
     
 
 if __name__ == '__main__':
-    main(noise=3, init=3)
+    main(noise=3, init=1)
     
 
     
