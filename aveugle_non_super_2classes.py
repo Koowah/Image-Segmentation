@@ -122,7 +122,7 @@ def calc_EM(Y, m, n, cl1, cl2, p10, p20, m10, sig10, m20, sig20, nb_iterEM):
 ###################################################################################
 
 
-def main(em=True, sem=True):
+def main(em=True, sem=True, noise=int):
     path = './images_BW/country2.bmp'
     X, shape = read_image(path)
     display_image('X', X * 255) # displays X
@@ -135,7 +135,13 @@ def main(em=True, sem=True):
     p1, p2 = calc_prior(X, m, n, cl1, cl2) # priors of each class
     print(f'\np(cl1) = p1 = {p1:.3f}\np(cl2) = p2 = {p2:.3f}')
     
-    m1, sig1, m2, sig2 = .3, .1, -.4, .1 # gaussian noise parameters    
+    # gaussian noise parameters - noise 1, 2 & 3
+    if noise==1:
+        m1, sig1, m2, sig2 = .3, .1, -.4, .1
+    elif noise==2:
+        m1, sig1, m2, sig2 = .3, .3, -.55, .3
+    else:
+        m1, sig1, m2, sig2 = .4, .3, -.6, .47    
     Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
     print(f'm1 = {m1}, sig1 = {sig1}, m2 = {m2}, sig2 = {sig2}')
     display_image('Y', Y)
@@ -173,7 +179,7 @@ def main(em=True, sem=True):
 
 if __name__ == '__main__':
     # si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
-    main()
+    main(noise=1)
     
 
     
