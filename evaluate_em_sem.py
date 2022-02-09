@@ -1,11 +1,6 @@
 from basictools import *
 from scipy.stats import norm
 
-# plotting libraries
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-
 
 ###################################################################################
 ###################################################################################
@@ -181,7 +176,7 @@ def main(em=True, sem=True, noise=1, init=1):
     
 
 if __name__ == '__main__':
-    main(init=3, noise=2)
+    main(noise=3, init=3)
     
 
     
