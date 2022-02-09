@@ -25,7 +25,6 @@ def main():
     path = './images_BW/country2.bmp'
     X, shape = read_image(path)
     display_image('X', X * 255) # displays X
-    print(f'Image : {path.split("/")[-1]}') # print image name
     
     cl1, cl2 = identify_classes(X) # identify image classes (two in our case)
     print(f'Class 1 : {cl1} (black)\nClass 2 : {cl2} (white)') 
@@ -44,46 +43,37 @@ def main():
     noisy_1 = X + noise_1
     noisy_2 = X + noise_2
     noisy_3 = X + noise_3
-
-    errors = [[],[],[]]
-    
-    for i in range(100):
-
+        
     # MPM on noisy_1 & error evaluation
-        m1, sig1, m2, sig2 = .3, .1, -.4, .1
-        X_hat_1 = MPM_Gauss(noisy_1, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
-        errors[0].append(error_rate(0, X, X_hat_1, m, n))
-    # MPM_result_1 = np.concatenate((X, noisy_1, X_hat_1), axis=1)
-    # display_image('Image, Noisy_1, MPM', MPM_result_1)
-    # print(f'\nError rate MPM noisy_1 : {error_rate(0, X, X_hat_1, m, n):.2%}')
+    m1, sig1, m2, sig2 = .3, .1, -.4, .1
+    X_hat_1 = MPM_Gauss(noisy_1, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
+    
+    MPM_result_1 = np.concatenate((X, noisy_1, X_hat_1), axis=1)
+    display_image('Image, Noisy_1, MPM', MPM_result_1)
+    print(f'\nError rate MPM noisy_1 : {error_rate(0, X, X_hat_1, m, n):.2%}')
     
     # cv2.imwrite('MPM_result_1.png', 255 * MPM_result_1) # write result into PNG file
-    
-    for i in range(100):
 
     # Kmeans on noisy_2 & error evaluation
-        m1, sig1, m2, sig2 = .3, .3, -.55, .3
-        X_hat_2 = MPM_Gauss(noisy_2, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
-        errors[1].append(error_rate(0, X, X_hat_2, m, n))
-    # MPM_result_2 = np.concatenate((X, noisy_2, X_hat_2), axis=1)
-    # display_image('Image, Noisy_2, KMeans', MPM_result_2)
-    # print(f'\nError rate MPM noisy_2 : {error_rate(0, X, X_hat_2, m, n):.2%}')
+    m1, sig1, m2, sig2 = .3, .3, -.55, .3
+    X_hat_2 = MPM_Gauss(noisy_2, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
+    
+    MPM_result_2 = np.concatenate((X, noisy_2, X_hat_2), axis=1)
+    display_image('Image, Noisy_2, KMeans', MPM_result_2)
+    print(f'\nError rate MPM noisy_2 : {error_rate(0, X, X_hat_2, m, n):.2%}')
     
     # cv2.imwrite('MPM_result_2.png', 255 * MPM_result_2)
     
-    for i in range(100):
     # Kmeans on noisy_3 & error evaluation
-        m1, sig1, m2, sig2 = .4, .3, -.6, .47
-        X_hat_3 = MPM_Gauss(noisy_3, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
-        errors[2].append(error_rate(0, X, X_hat_3, m, n))
-    # MPM_result_3 = np.concatenate((X, noisy_3, X_hat_3), axis=1)
-    # display_image('Image, Noisy_2, KMeans', MPM_result_3)
-    # print(f'\nError rate MPM noisy_3 : {error_rate(0, X, X_hat_3, m, n):.2%}')
+    m1, sig1, m2, sig2 = .4, .3, -.6, .47
+    X_hat_3 = MPM_Gauss(noisy_3, cl1, cl2, p1, p2, m1, sig1, m2, sig2)
+    
+    MPM_result_3 = np.concatenate((X, noisy_3, X_hat_3), axis=1)
+    display_image('Image, Noisy_2, KMeans', MPM_result_3)
+    print(f'\nError rate MPM noisy_3 : {error_rate(0, X, X_hat_3, m, n):.2%}')
     
     # cv2.imwrite('MPM_result_3.png', 255 * MPM_result_3)
-    print(np.array(errors[0]).mean())
-    print(np.array(errors[1]).mean())
-    print(np.array(errors[2]).mean())
+    
     
     # m1, sig1, m2, sig2 = .4, .3, -.6, .47 # gaussian noise parameters
     # Y = X + gauss_noise(X, m, n, cl1, cl2, m1, sig1, m2, sig2) # adding noise to image
