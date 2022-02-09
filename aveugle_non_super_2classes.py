@@ -169,7 +169,7 @@ def main(em=True, sem=True):
         df_sem = pd.DataFrame.from_dict(dic_sem)
         sns.relplot(data=df_sem, kind='line') # Plotting evolution of parameters over SEM iterations
     
-    # plt.show()
+    plt.show()
 
 if __name__ == '__main__':
     # si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
