@@ -186,8 +186,7 @@ def main(em=True, sem=True, noise=int, init=int):
     plt.show()
 
 if __name__ == '__main__':
-    # si le bruit 0, 0, .6, .6 ça converge vers un minimum local        
-    main(noise=2, init=3)
+    main(noise=3, init=3)
     
 
     
