@@ -2,7 +2,7 @@
 
 ## KMeans, MPM, Markov Random Fields
 
-School project - will be cleaned up and formatted into useable modules.
+School project - will be cleaned up and formatted into useable modules as soon as time allows me to do it.
 
 Doc will be updated to give proper directions to use programs and runtimes can be quite long (for MRFs in particular).
 
